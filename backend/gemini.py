@@ -6,7 +6,14 @@ import time
 import re
 
 # Initialize the Gemini API client
-client = genai.Client(api_key="")  ##Your API key here.
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Initialize the Gemini API client from environment variables
+api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
+client = genai.Client(api_key=api_key) if api_key else None
 
 def analyze_websites_with_gemini(websites, category="e-commerce"):
     """

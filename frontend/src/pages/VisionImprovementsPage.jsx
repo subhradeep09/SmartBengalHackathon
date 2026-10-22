@@ -96,7 +96,8 @@ const VisionImprovementsPage = () => {
         ];
         
         // Make API request to your backend
-        const response = await axios.post('http://localhost:5000/compare_websites', {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const response = await axios.post(`${API_BASE_URL}/compare_websites`, {
           websites: websites,
           category: 'e-commerce'
         });
@@ -359,7 +360,7 @@ const VisionImprovementsPage = () => {
                       <div className="p-4">
                         <div className="relative rounded-lg overflow-hidden border border-gray-700">
                           <img 
-                            src={`http://localhost:5000/screenshots/${websiteData.websites[activeWebsite].name.toLowerCase().replace(/\s+/g, '_')}/${websiteData.websites[activeWebsite].name.toLowerCase().replace(/\s+/g, '_')}_full.png`} 
+                            src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/screenshots/${websiteData.websites[activeWebsite].name.toLowerCase().replace(/\s+/g, '_')}/${websiteData.websites[activeWebsite].name.toLowerCase().replace(/\s+/g, '_')}_full.png`} 
                             alt={`${websiteData.websites[activeWebsite].name} screenshot`}
                             className="w-full h-auto"
                           />

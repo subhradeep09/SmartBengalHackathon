@@ -147,20 +147,21 @@ def capture_sections_and_fullpage(page, url, website_name):
             "full": full_page_path
         }
 
-        # Upload to Cloudinary
+        # Upload to Cloudinary if configured
         cloudinary_folder = f"website_screenshots/{website_name}"
         cloudinary_urls = {}
 
-        # Upload each section to Cloudinary
-        for section, path in local_paths.items():
-            if path and os.path.exists(path):
-                public_id = f"{website_name}_{section}"
-                result = upload_image(path, public_id=public_id, folder=cloudinary_folder)
-                
-                if "error" not in result:
-                    cloudinary_urls[f"{section}_cloudinary_url"] = result["url"]
-                else:
-                    print(f"⚠️ Failed to upload {section} screenshot to Cloudinary: {result['error']}")
+        if os.environ.get('CLOUDINARY_CLOUD_NAME'):
+            # Upload each section to Cloudinary
+            for section, path in local_paths.items():
+                if path and os.path.exists(path):
+                    public_id = f"{website_name}_{section}"
+                    result = upload_image(path, public_id=public_id, folder=cloudinary_folder)
+                    
+                    if "error" not in result:
+                        cloudinary_urls[f"{section}_cloudinary_url"] = result["url"]
+                    else:
+                        print(f"⚠️ Failed to upload {section} screenshot to Cloudinary: {result['error']}")
         
         # Combine local paths and Cloudinary URLs
         return {**local_paths, **cloudinary_urls}
